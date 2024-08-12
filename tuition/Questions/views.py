@@ -20,6 +20,11 @@ class AccountCreationForm(forms.ModelForm):
         return user
 
 
+class QuestionForm(forms.Form):
+    question_description = forms.CharField(widget=forms.Textarea)
+    question_image = forms.ImageField()
+
+
 def index(request):
     if (request.method == "GET"):
         return render(request, "index.html", context={
@@ -42,6 +47,7 @@ def index(request):
                 })
         elif ("login_form" in request.POST):
             return login_view(request, username=request.POST['login_username'], password=request.POST['login_password'])
+
 
 def login_view(request, username, password):
     user = authenticate(request, username=username, password=password)
@@ -67,6 +73,23 @@ def home(request):
 
 @login_required
 def new_question(request):
-    pass
+    if (request.method == "GET"):
+        return render(request, "new_question.html", context={
+            "form": QuestionForm()
+        })
+    elif (request.method == "POST"):
+        form = QuestionForm(request.POST, request.FILES)
+        if (form.is_valid()):
+            question = Question.objects.create(
+                question_sender=request.user,
+                question_description=form.cleaned_data.get("question_description"),
+                question_image=form.cleaned_data.get("question_image")
+            )
+            question.save()
+            return HttpResponseRedirect(reverse("home"))
+        else:
+            return render(request, "new_question.html", context={
+                "form": QuestionForm(request.POST)
+            })
 
 
