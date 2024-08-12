@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'javascript/index.js' %}"></script>
+{% endblock %}
+
+{% block nav %}
+    <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+        <li class="nav-item d-flex justify-content-end">
+          <a href="{% url "new_question" %}" class="btn btn-dark me-3" id="ask_question">New Question</a>
+        </li>
+        <li class="nav-item d-flex justify-content-end">
+          <a href="{% url "logout" %}" class="btn btn-dark me-3" id="logout">Log Out</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+    Uncompleted home page
+{% endblock %}

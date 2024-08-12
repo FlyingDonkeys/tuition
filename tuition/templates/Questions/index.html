@@ -1,10 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "layout.html" %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'javascript/index.js' %}"></script>
+{% endblock %}
+
+{% block nav %}
+    <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+        <li class="nav-item d-flex justify-content-end">
+          <button class="btn btn-dark me-3" id="create_account">Create Account</button>
+        </li>
+        <li class="nav-item d-flex justify-content-end">
+          <button class="btn btn-dark me-3" id="log_in">Log In</button>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+    <div class="container" id="creation_form" style="display: none">
+        <p class="fs-3 fw-semibold mb-3">Create An Account</p>
+        <form method="post" action="{% url 'index' %}">
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="mb-3">
+                {{ field.errors }}
+                <label for="{{ field.label }}" class="form-label">{{ field.label }}</label>
+                {% if field.label == "Password" %}
+                    <input type="password" class="form-control" name="{{ field.name }}">
+                {% else %}
+                    <input type="{{ field.widget_type }}" class="form-control" name="{{ field.name }}">
+                {% endif %}
+              </div>
+            {% endfor %}
+            <!-- To centralise the submit button -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-5">
+                        <!-- Spacing -->
+                        <input type="hidden" name="creation_form" id="creation_form">
+                    </div>
+                    <div class="col-1">
+                        <button type="submit" class="btn btn-outline-dark">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="container-fluid" id="login_form" style="display: block">
+        <div class="container">
+            <p class="fs-3 fw-semibold mb-3">Login</p>
+            {% if error %}
+                <p class="fs-5 fw-semibold mb-1" style="color: red">{{ error }}</p>
+            {% endif %}
+            <form action="{% url 'index' %}" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="login_username">Username</label>
+                    <input type="text" class="form-control" placeholder="Username" name="login_username">
+                </div>
+                <div class="mb-3">
+                    <label for="login_password">Password</label>
+                    <input type="password" class="form-control" placeholder="Password" name="login_password">
+                </div>
+                <div class="row">
+                    <div class="col-5">
+                        <input type="hidden" name="login_form" id="login_form">
+                    </div>
+                    <div class="col-1">
+                        <button type="submit" class="btn btn-outline-dark">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <input type="hidden" value="{{ state }}" id="state">
+{% endblock %}
