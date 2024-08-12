@@ -24,6 +24,10 @@ class QuestionForm(forms.Form):
     question_description = forms.CharField(widget=forms.Textarea)
     question_image = forms.ImageField()
 
+class AnswerForm(forms.Form):
+    answer_description = forms.CharField(widget=forms.Textarea)
+    answer_image = forms.ImageField()
+
 
 def index(request):
     if (request.method == "GET"):
@@ -68,7 +72,10 @@ def logout_view(request):
 
 @login_required
 def home(request):
-    return render(request, "home.html")
+    questions = Question.objects.all()
+    return render(request, "home.html", context={
+        "questions": questions
+    })
 
 
 @login_required
@@ -91,5 +98,42 @@ def new_question(request):
             return render(request, "new_question.html", context={
                 "form": QuestionForm(request.POST)
             })
+
+
+@login_required
+def new_answer(request, question_id):
+    if (request.method == "GET"):
+        return render(request, "new_answer.html", context={
+            "form": AnswerForm(),
+            "question_id": question_id
+        })
+    elif (request.method == "POST"):
+        form = AnswerForm(request.POST, request.FILES)
+        if (form.is_valid()):
+            answer = Answer.objects.create(
+                related_question=Question.objects.get(id=question_id),
+                answer_provider=request.user,
+                answer_description=form.cleaned_data.get("answer_description"),
+                answer_image=form.cleaned_data.get("answer_image")
+            )
+            answer.save()
+            # Remember to mark the question as solved
+            Question.objects.get(id=question_id).is_solved = True
+            return HttpResponseRedirect(reverse("home"))
+        else:
+            return render(request, "new_answer.html", context={
+                "form": AnswerForm(request.POST),
+                "question_id": question_id
+            })
+
+
+@login_required
+def question(request, question_id):
+    return render(request, 'question.html', context={
+        "question": Question.objects.get(id=question_id),
+        "answers": Question.objects.get(id=question_id).answer.all()
+    })
+
+
 
 

@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block script %}
+{% endblock %}
+
+{% block nav %}
+    <li class="nav-item d-flex justify-content-end">
+      <a href="{% url "home" %}" class="btn btn-dark me-3" id="home">Back</a>
+    </li>
+    <li class="nav-item d-flex justify-content-end">
+      <a href="{% url "logout" %}" class="btn btn-dark me-3" id="logout">Log Out</a>
+    </li>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <p class="fs-4 fw-semibold mb-3">Question {{ question.id }}</p>
+        <div class="container border border-dark mb-3">
+            <div class="row">
+                <div class="col-6 border-end border-dark">
+                    <img src="{{ question.question_image.url }}" class="img-fluid" alt="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Fpremium-vector%2Fdefault-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_33011701.htm&psig=AOvVaw0IR2NPn9C3SH9F9y0bOe40&ust=1723553371467000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCNi53-W-74cDFQAAAAAdAAAAABAS">
+                </div>
+                <div class="col-6">
+                    <div class="row mb-1">
+                        <p class="text-break">Description: {{ question.question_description }}</p>
+                    </div>
+                    <div class="row mb-1">
+                        {% if question.is_solved %}
+                            <div class="col-1">
+                                <p class="text">Status:</p>
+                            </div>
+                            <div class="col-1">
+                                <p class="text-success">Solved</p>
+                            </div>
+                        {% else %}
+                            <div class="col-1">
+                                <p class="text">Status:</p>
+                            </div>
+                            <div class="col-1">
+                                <p class="text-danger">Unsolved</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+        <p class="fs-4 fw-semibold mb-3">Answers</p>
+        {% for answer in answers %}
+            <div class="container border border-dark mb-3">
+                <div class="row">
+                    <div class="col-8 border-end border-dark">
+                        <img src="{{ answer.answer_image.url }}" class="img-fluid" alt="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Fpremium-vector%2Fdefault-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_33011701.htm&psig=AOvVaw0IR2NPn9C3SH9F9y0bOe40&ust=1723553371467000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCNi53-W-74cDFQAAAAAdAAAAABAS">
+                    </div>
+                    <div class="col-4">
+                        <div class="row mb-1">
+                            <p class="text-break fw-semibold">Submitted By: {{ answer.answer_provider.username }}</p>
+                        </div>
+                        <div class="row mb-1">
+                            <p class="text-break">Description: {{ answer.answer_description }}</p>
+                        </div>
+                        <div class="row mb-1">
+                            <p class="text-break" style="color: green">Note: Feel free to download the solution image provided!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

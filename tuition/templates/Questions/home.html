@@ -16,5 +16,56 @@
 {% endblock %}
 
 {% block body %}
-    Uncompleted home page
+    <div class="container">
+        <p class="fs-3 fw-semibold mb-3">All Questions</p>
+        {% for question in questions %}
+            <div class="container border border-dark mb-3">
+                <div class="row">
+                    <div class="col-6 border-end border-dark">
+                        <img src="{{ question.question_image.url }}" class="img-fluid" alt="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Fpremium-vector%2Fdefault-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_33011701.htm&psig=AOvVaw0IR2NPn9C3SH9F9y0bOe40&ust=1723553371467000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCNi53-W-74cDFQAAAAAdAAAAABAS">
+                    </div>
+                    <div class="col-6">
+                        <div class="row mb-1">
+                            <p class="text-break">Description: {{ question.question_description }}</p>
+                        </div>
+                        <div class="row mb-1">
+                            {% if question.is_solved %}
+                                <div class="col-1">
+                                    <p class="text">Status:</p>
+                                </div>
+                                <div class="col-1">
+                                    <p class="text-success">Solved</p>
+                                </div>
+                            {% else %}
+                                <div class="col-1">
+                                    <p class="text">Status:</p>
+                                </div>
+                                <div class="col-1">
+                                    <p class="text-danger">Unsolved</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="row mb-1">
+                            <p class="text">Number of Answers: {{ question.answer.count }}</p>
+                        </div>
+                            <div class="row mb-1">
+                                <div class="col-3">
+                                    <!-- Spacing -->
+                                </div>
+                                <div class="col-3">
+                                    {% if question.is_solved %}
+                                        <a href="{% url "question" question.id %}" class="btn btn-dark">View Answers</a>
+                                    {% else %}
+                                        <a href="{% url "question" question.id %}" class="btn btn-dark disabled">View Answers</a>
+                                    {% endif %}
+                                </div>
+                                <div class="col-3">
+                                    <a href="{% url "new_answer" question.id %}" class="btn btn-dark">Submit Answer</a>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
