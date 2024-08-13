@@ -105,7 +105,8 @@ def new_answer(request, question_id):
     if (request.method == "GET"):
         return render(request, "new_answer.html", context={
             "form": AnswerForm(),
-            "question_id": question_id
+            "question_id": question_id,
+            "question": Question.objects.get(id=question_id)
         })
     elif (request.method == "POST"):
         form = AnswerForm(request.POST, request.FILES)
@@ -118,12 +119,15 @@ def new_answer(request, question_id):
             )
             answer.save()
             # Remember to mark the question as solved
-            Question.objects.get(id=question_id).is_solved = True
+            question = Question.objects.get(id=question_id)
+            question.is_solved = True
+            question.save()
             return HttpResponseRedirect(reverse("home"))
         else:
             return render(request, "new_answer.html", context={
                 "form": AnswerForm(request.POST),
-                "question_id": question_id
+                "question_id": question_id,
+                "question": Question.objects.get(id=question_id)
             })
 
 

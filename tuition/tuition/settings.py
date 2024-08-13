@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-t^@(!yqa2s0(#-hp4212yfa(zxg85ob!2%ujsm(p_v+cw%x074
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    "127.0.0.1",
     "tuition-production.up.railway.app"
 ]
 
@@ -134,7 +135,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 STATIC_URL = '/Questions/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
+    os.path.join(BASE_DIR, "Questions/static")
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
