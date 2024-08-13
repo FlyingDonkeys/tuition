@@ -31,7 +31,7 @@ ALLOWED_HOSTS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://tuition-production.up.railway.app/"
+    "https://*.railway.app"
 ]
 
 
