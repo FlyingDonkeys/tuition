@@ -85,10 +85,10 @@ WSGI_APPLICATION = 'tuition.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': 'jwyOywDXDSFgqwUmvQFbRFsBHZAvvQFm',
+        'PASSWORD': 'tlGJJZSfySZyFOdTcGwKmRoSKIseZXfF',
         'HOST': 'postgres.railway.internal',
         'PORT': '5432',
     }
