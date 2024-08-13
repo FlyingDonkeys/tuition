@@ -30,6 +30,10 @@ ALLOWED_HOSTS = [
     "tuition-production.up.railway.app"
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://tuition-production.up.railway.app/"
+]
+
 
 # Application definition
 
